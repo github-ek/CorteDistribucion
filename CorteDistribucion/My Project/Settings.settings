@@ -1,0 +1,495 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="CiudadOrigenId" GenerateDefaultValueInCode="false" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="TipoCorteRutaId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SateliteConnectionString" GenerateDefaultValueInCode="false" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=192.168.10.15;Initial Catalog=SateliteDev;Persist Security Info=True;User ID=CorteDistribucion;Password=kknsf823ry(#jso!.f&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=192.168.10.15;Initial Catalog=SateliteDev;Persist Security Info=True;User ID=CorteDistribucion;Password=kknsf823ry(#jso!.f</Value>
+    </Setting>
+    <Setting Name="TacticConnectionString" GenerateDefaultValueInCode="false" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=192.168.10.15;Initial Catalog=Tactic;Persist Security Info=True;User ID=CorteDistribucion;Password=kknsf823ry(#jso!.f&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=192.168.10.15;Initial Catalog=Tactic;Persist Security Info=True;User ID=CorteDistribucion;Password=kknsf823ry(#jso!.f</Value>
+    </Setting>
+    <Setting Name="URLReportePlanillaRuta" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://192.168.10.21:8081/jasperserver/flow.html?_flowId=viewReportFlow&amp;_flowId=viewReportFlow&amp;ParentFolderUri=%2Freports&amp;reportUnit=%2Freports%2FTMS___Planilla_de_Ruta&amp;standAlone=true&amp;j_acegi_security_check&amp;j_username=Tactic&amp;j_password=Tactic&amp;output=pdf&amp;PRUTA=</Value>
+    </Setting>
+    <Setting Name="AsignacionCitasSQLConsulta" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">;
+WITH
+cte_cedis AS
+(
+	SELECT
+		a.id_bodega
+	FROM
+	(
+		VALUES
+			--@ListaCeDiOrigen
+			(CAST(0 AS INT))
+	) a(id_bodega)
+	WHERE
+		0 = 0
+),
+cte_clientes AS
+(
+	SELECT
+		a.id_cliente
+	FROM
+	(
+		VALUES
+			--@ListaClientes
+			(CAST(NULL AS INT))
+	) a(id_cliente)
+	WHERE
+		a.id_cliente IS NOT NULL
+),
+cte_tipos_servicios AS
+(
+	SELECT
+		a.id_tipo_servicio
+	FROM
+	(
+		VALUES
+			--@ListaTiposServicio
+			(CAST(NULL AS INT))
+	) a(id_tipo_servicio)
+	WHERE
+		a.id_tipo_servicio IS NOT NULL
+),
+cte_canales AS
+(
+	SELECT
+		a.id_canal
+	FROM
+	(
+		VALUES
+			--@ListaCanales
+			(CAST(NULL AS INT))
+	) a(id_canal)
+	WHERE
+		a.id_canal IS NOT NULL
+),
+cte_departamentos AS
+(
+	SELECT
+		b.id_ciudad
+	FROM
+	(
+		VALUES
+			--@ListaDepartamentos
+			(CAST(NULL AS INT))
+	) a(id_departamento)
+	INNER JOIN geo.ciudades b ON
+		b.id_departamento = a.id_departamento
+	WHERE
+		a.id_departamento IS NOT NULL
+),
+cte_ciudades AS
+(
+	SELECT
+		a.id_ciudad
+	FROM
+	(
+		VALUES
+			--@ListaCiudades
+			(CAST(NULL AS INT))
+	) a(id_ciudad)
+	WHERE
+		a.id_ciudad IS NOT NULL
+	UNION
+	SELECT
+		a.id_ciudad
+	FROM cte_departamentos a
+),
+cte_excluidas AS
+(
+	SELECT
+		a.id_orden
+	FROM
+	(
+		VALUES
+			--@ListaExcluidas
+			(CAST(NULL AS INT))
+	) a(id_orden)
+),
+cte_incluidas AS
+(
+	SELECT
+		 0 AS tipo_habilitacion
+		,a.id_orden
+	FROM
+	(
+		VALUES
+			--@ListaIncluidas
+			(CAST(NULL AS INT))
+	) a(id_orden)
+	WHERE
+		a.id_orden IS NOT NULL
+),
+cte_corte_normal AS
+(
+	SELECT
+		 CASE WHEN c.id_orden IS NULL THEN 1 ELSE 2 END AS tipo_habilitacion
+
+		,a.id_orden
+	FROM tms.ConsultaAsignacionCitasPorIntervaloFechas(@ciudadId
+,@fechaDesde,@fechaHasta) a
+	INNER JOIN cte_cedis b ON
+		b.id_bodega = a.id_bodega
+	LEFT OUTER JOIN cte_excluidas c ON
+		c.id_orden = a.id_orden
+	LEFT OUTER JOIN cte_incluidas d ON
+		d.id_orden = a.id_orden
+	WHERE
+		d.id_orden IS NULL
+	--@FiltrarSoloIncluirIncluidas AND 0 = 1
+	--@FiltrarPorCliente AND a.id_cliente IN (SELECT id_cliente FROM cte_clientes)
+	--@FiltrarPorTipoServicio AND a.id_tipo_servicio IN (SELECT id_tipo_servicio FROM cte_tipos_servicios)
+	--@FiltrarPorCanal AND a.id_canal IN (SELECT id_canal FROM cte_canales)
+	--@FiltrarPorCiudadDestino AND a.id_ciudad_destino IN (SELECT id_ciudad FROM cte_ciudades)
+),
+cte_corte AS
+(
+	SELECT
+		 a.tipo_habilitacion
+		,a.id_orden
+	FROM cte_corte_normal a
+	UNION
+	SELECT
+		 a.tipo_habilitacion
+		,a.id_orden
+	FROM cte_incluidas a
+)
+SELECT
+	CASE a.tipo_habilitacion
+	WHEN 0 THEN 'INCLUSION'
+	WHEN 1 THEN 'NORMAL'
+	WHEN 2 THEN 'EXCLUSION'
+	ELSE '' END AS tipo_habilitacion_codigo
+	,b.*
+	,a.tipo_habilitacion
+FROM cte_corte a
+CROSS APPLY tms.ConsultaAsignacionCitasPorOrdenId(a.id_orden) b</Value>
+    </Setting>
+    <Setting Name="CorteDistribucionSQLConsulta" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">;
+WITH
+cte_cedis AS
+(
+	SELECT
+		a.id_bodega
+	FROM
+	(
+		VALUES
+			--@ListaCeDiOrigen
+			(CAST(0 AS INT))
+	) a(id_bodega)
+	WHERE
+		0 = 0
+--@NoPermitirOrdenesSinCeDiOrigen	AND a.id_bodega &lt;&gt; 0
+),
+cte_clientes AS
+(
+	SELECT
+		a.id_cliente
+	FROM
+	(
+		VALUES
+			--@ListaClientes
+			(CAST(NULL AS INT))
+	) a(id_cliente)
+	WHERE
+		a.id_cliente IS NOT NULL
+),
+cte_tipos_servicios AS
+(
+	SELECT
+		a.id_tipo_servicio
+	FROM
+	(
+		VALUES
+			--@ListaTiposServicio
+			(CAST(NULL AS INT))
+	) a(id_tipo_servicio)
+	WHERE
+		a.id_tipo_servicio IS NOT NULL
+),
+cte_canales AS
+(
+	SELECT
+		a.id_canal
+	FROM
+	(
+		VALUES
+			--@ListaCanales
+			(CAST(NULL AS INT))
+	) a(id_canal)
+	WHERE
+		a.id_canal IS NOT NULL
+),
+cte_departamentos AS
+(
+	SELECT
+		b.id_ciudad
+	FROM
+	(
+		VALUES
+			--@ListaDepartamentos
+			(CAST(NULL AS INT))
+	) a(id_departamento)
+	INNER JOIN geo.ciudades b ON
+		b.id_departamento = a.id_departamento
+	WHERE
+		a.id_departamento IS NOT NULL
+),
+cte_ciudades AS
+(
+	SELECT
+		a.id_ciudad
+	FROM
+	(
+		VALUES
+			--@ListaCiudades
+			(CAST(NULL AS INT))
+	) a(id_ciudad)
+	WHERE
+		a.id_ciudad IS NOT NULL
+	UNION
+	SELECT
+		a.id_ciudad
+	FROM cte_departamentos a
+),
+cte_excluidas AS
+(
+	SELECT
+		a.id_orden
+	FROM
+	(
+		VALUES
+			--@ListaExcluidas
+			(CAST(NULL AS INT))
+	) a(id_orden)
+),
+cte_incluidas AS
+(
+	SELECT
+		 0 AS tipo_habilitacion
+		,a.id_orden
+	FROM
+	(
+		VALUES
+			--@ListaIncluidas
+			(CAST(NULL AS INT))
+	) a(id_orden)
+	WHERE
+		a.id_orden IS NOT NULL
+),
+cte_corte_normal AS
+(
+	SELECT
+		 CASE WHEN c.id_orden IS NULL THEN 1 ELSE 2 END AS tipo_habilitacion
+
+		,a.id_orden
+	FROM tms.ConsultaCorteOrdenesPorCiudadOrigen(@ciudadId) a
+	INNER JOIN cte_cedis b ON
+		b.id_bodega = a.id_bodega
+	LEFT OUTER JOIN cte_excluidas c ON
+		c.id_orden = a.id_orden
+	LEFT OUTER JOIN cte_incluidas d ON
+		d.id_orden = a.id_orden
+	WHERE
+		d.id_orden IS NULL
+	--@FiltrarSoloIncluirIncluidas AND 0 = 1
+	--@FiltrarPorCliente AND a.id_cliente IN (SELECT id_cliente FROM cte_clientes)
+	--@FiltrarPorTipoServicio AND a.id_tipo_servicio IN (SELECT id_tipo_servicio FROM cte_tipos_servicios)
+	--@FiltrarPorCanal AND a.id_canal IN (SELECT id_canal FROM cte_canales)
+	--@FiltrarPorCiudadDestino AND a.id_ciudad_destino IN (SELECT id_ciudad FROM cte_ciudades)
+),
+cte_corte AS
+(
+	SELECT
+		 a.tipo_habilitacion
+		,a.id_orden
+	FROM cte_corte_normal a
+	UNION
+	SELECT
+		 a.tipo_habilitacion
+		,a.id_orden
+	FROM cte_incluidas a
+)
+SELECT
+	CASE a.tipo_habilitacion
+	WHEN 0 THEN 'INCLUSION'
+	WHEN 1 THEN 'NORMAL'
+	WHEN 2 THEN 'EXCLUSION'
+	ELSE '' END AS tipo_habilitacion_codigo
+
+	,b.*
+
+	,a.tipo_habilitacion
+FROM cte_corte a
+CROSS APPLY tms.ConsultaCorteOrdenesPorOrdenId(a.id_orden) b</Value>
+    </Setting>
+    <Setting Name="CorteDistribucionSQLAgregarOrdenACorte" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">;
+WITH
+cte_00 AS
+(
+	SELECT
+		 a.id_orden 
+		,b.id_corte_ruta
+		,b.fecha_corte_inicio
+		,b.usuario_corte
+	FROM (
+		VALUES
+			--@ListaHabilitadas
+			(CAST(NULL AS INT))
+	) a(id_orden)
+	INNER JOIN tms.cortes_ruta b ON
+		b.id_corte_ruta = @corteId
+	WHERE
+		a.id_orden IS NOT NULL
+)
+UPDATE a
+SET 
+	 a.id_corte_ruta = b.id_corte_ruta 
+	,a.fecha_corte_ruta = b.fecha_corte_inicio
+	,a.usuario_corte_ruta = b.usuario_corte
+	,a.id_estado_orden = CASE WHEN a.id_estado_orden = 'ACEPTADA' THEN 'EJECUCION' ELSE a.id_estado_orden END
+	,a.id_estado_distribucion = 'PLANIFICACION'
+FROM ordenes.ordenes a
+INNER JOIN cte_00 b ON
+	b.id_orden = a.id_orden</Value>
+    </Setting>
+    <Setting Name="CitaVentanaHoraria" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="CitaAMPM" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AM</Value>
+    </Setting>
+    <Setting Name="RutasSQLConsulta" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">;
+WITH
+cte_cedis AS
+(
+	SELECT
+		a.id_bodega
+	FROM
+	(
+		VALUES
+			--@ListaCeDiOrigen
+			(CAST(NULL AS INT))
+	) a(id_bodega)
+	WHERE
+		a.id_bodega IS NOT NULL
+),
+cte_clientes AS
+(
+	SELECT
+		a.id_cliente
+	FROM
+	(
+		VALUES
+			--@ListaClientes
+			(CAST(NULL AS INT))
+	) a(id_cliente)
+	WHERE
+		a.id_cliente IS NOT NULL
+),
+cte_tipos_servicios AS
+(
+	SELECT
+		a.id_tipo_servicio
+	FROM
+	(
+		VALUES
+			--@ListaTiposServicio
+			(CAST(NULL AS INT))
+	) a(id_tipo_servicio)
+	WHERE
+		a.id_tipo_servicio IS NOT NULL
+),
+cte_canales AS
+(
+	SELECT
+		a.id_canal
+	FROM
+	(
+		VALUES
+			--@ListaCanales
+			(CAST(NULL AS INT))
+	) a(id_canal)
+	WHERE
+		a.id_canal IS NOT NULL
+),
+cte_departamentos AS
+(
+	SELECT
+		b.id_ciudad
+	FROM
+	(
+		VALUES
+			--@ListaDepartamentos
+			(CAST(NULL AS INT))
+	) a(id_departamento)
+	INNER JOIN geo.ciudades b ON
+		b.id_departamento = a.id_departamento
+	WHERE
+		a.id_departamento IS NOT NULL
+),
+cte_ciudades AS
+(
+	SELECT
+		a.id_ciudad
+	FROM
+	(
+		VALUES
+			--@ListaCiudades
+			(CAST(NULL AS INT))
+	) a(id_ciudad)
+	WHERE
+		a.id_ciudad IS NOT NULL
+	UNION
+	SELECT
+		a.id_ciudad
+	FROM cte_departamentos a
+),
+cte_corte_normal AS
+(
+	SELECT
+		 a.id_ruta
+	FROM tms.ConsultaRutasPorIntervaloFechas(@ciudadId,@fechaDesde,@fechaHasta) a
+	INNER JOIN cte_cedis b ON
+		b.id_bodega = a.id_bodega_origen
+	--@FiltrarPorCliente AND a.id_cliente IN (SELECT id_cliente FROM cte_clientes)
+	--@FiltrarPorTipoServicio AND a.id_tipo_servicio IN (SELECT id_tipo_servicio FROM cte_tipos_servicios)
+	--@FiltrarPorCanal AND a.id_canal IN (SELECT id_canal FROM cte_canales)
+	--@FiltrarPorCiudadDestino AND a.id_ciudad_destino IN (SELECT id_ciudad FROM cte_ciudades)
+),
+cte_corte AS
+(
+	SELECT DISTINCT
+		 a.id_ruta
+	FROM cte_corte_normal a
+)
+SELECT
+	 b.*
+FROM cte_corte a
+CROSS APPLY tms.ConsultaRutasPorRutaId(a.id_ruta) b
+</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
