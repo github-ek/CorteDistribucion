@@ -88,14 +88,6 @@ Public Class FormMain
             .Show()
         End With
     End Sub
-    Private Sub CierreDeOrdenes()
-        With FormRuta
-            .RutaId = 645
-            .MdiParent = Me
-            .WindowState = FormWindowState.Maximized
-            .Show()
-        End With
-    End Sub
 #End Region
 
 #Region "Comandos Menú Maestros"
@@ -136,15 +128,10 @@ Public Class FormMain
     End Sub
 
     Private Sub CierreDeOrdenesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CierreDeOrdenesToolStripMenuItem.Click
-        CierreDeOrdenes()
+
     End Sub
 
     Private Sub TestCambioEstadoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TestCambioEstadoToolStripMenuItem.Click
-        Dim form As New FormCerrarOrden
-        With form
-            .OrdenId = 67500
-            .ShowDialog()
-        End With
     End Sub
 #End Region
 

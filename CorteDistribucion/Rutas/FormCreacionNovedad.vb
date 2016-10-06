@@ -1,13 +1,18 @@
 ﻿Imports System.Data.SqlClient
 
-Public Class FormEdicionNovedad
+Public Class FormCreacionNovedad
     Private Loading As Boolean = False
 
+
+#Region "Propiedades"
     Public Property LineaOrdenId As Integer
+
     Public Property CausalesDeNovedades As List(Of CausalDeNovedadDeDistribucion)
     Public Property TiposDeNovedad As List(Of TipoDeNovedadDeDistribucion)
     Public Property Responsables As List(Of KeyValueObject(Of Integer, String))
     Public Property ResponsablesInternos As List(Of KeyValueObject(Of Integer?, String))
+
+#End Region
 
     Private Property CantidadPlanificada As Integer
     Private Property CantidadOtrasNovedades As Integer

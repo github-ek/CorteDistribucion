@@ -58,14 +58,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CorteDistribucion.exe" size="1298944">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CorteDistribucion.exe" size="596992">
       <assemblyIdentity name="CorteDistribucion" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>KquaWSjnOJkqIB979v0x3PK+QqHW/vFA3iGTwfcVrr8=</dsig:DigestValue>
+        <dsig:DigestValue>1jNavbAaZl4Su+PrAdZJfmYXcj1Mhdoe4xm0a/n6vKo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

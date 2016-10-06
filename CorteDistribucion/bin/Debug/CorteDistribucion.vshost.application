@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="CorteDistribucion.exe.manifest" size="16041">
+    <dependentAssembly dependencyType="install" codebase="CorteDistribucion.exe.manifest" size="16040">
       <assemblyIdentity name="CorteDistribucion.exe" version="1.0.0.6" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>bgX9NijVIJ9UFQyw5jJRwnrYzDftpMb/Axk25SdF0OI=</dsig:DigestValue>
+        <dsig:DigestValue>BYjdZlEKR8uMPiMvGurClRKYL5V6E4e5300h6BjmOqE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

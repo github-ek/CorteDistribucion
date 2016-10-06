@@ -75,8 +75,8 @@ Partial Class FormRuta
         Me.ToolStripButton4 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButtonAcciones = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.EditarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ImprimirPlanillaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RegistrarCajasPorOrdenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CambiarEstadoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButtonSeleccionarTodosSeleccionados = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
@@ -682,25 +682,25 @@ Partial Class FormRuta
         'ToolStripButtonAcciones
         '
         Me.ToolStripButtonAcciones.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripButtonAcciones.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditarToolStripMenuItem, Me.ImprimirPlanillaToolStripMenuItem})
+        Me.ToolStripButtonAcciones.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RegistrarCajasPorOrdenToolStripMenuItem, Me.CambiarEstadoToolStripMenuItem})
         Me.ToolStripButtonAcciones.Image = CType(resources.GetObject("ToolStripButtonAcciones.Image"), System.Drawing.Image)
         Me.ToolStripButtonAcciones.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButtonAcciones.Name = "ToolStripButtonAcciones"
         Me.ToolStripButtonAcciones.Size = New System.Drawing.Size(68, 27)
         Me.ToolStripButtonAcciones.Text = "Acciones"
         '
-        'EditarToolStripMenuItem
+        'RegistrarCajasPorOrdenToolStripMenuItem
         '
-        Me.EditarToolStripMenuItem.Enabled = False
-        Me.EditarToolStripMenuItem.Name = "EditarToolStripMenuItem"
-        Me.EditarToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
-        Me.EditarToolStripMenuItem.Text = "Registrar Cajas"
+        Me.RegistrarCajasPorOrdenToolStripMenuItem.Enabled = False
+        Me.RegistrarCajasPorOrdenToolStripMenuItem.Name = "RegistrarCajasPorOrdenToolStripMenuItem"
+        Me.RegistrarCajasPorOrdenToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.RegistrarCajasPorOrdenToolStripMenuItem.Text = "Registrar Cajas"
         '
-        'ImprimirPlanillaToolStripMenuItem
+        'CambiarEstadoToolStripMenuItem
         '
-        Me.ImprimirPlanillaToolStripMenuItem.Name = "ImprimirPlanillaToolStripMenuItem"
-        Me.ImprimirPlanillaToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
-        Me.ImprimirPlanillaToolStripMenuItem.Text = "Cambiar Estado"
+        Me.CambiarEstadoToolStripMenuItem.Name = "CambiarEstadoToolStripMenuItem"
+        Me.CambiarEstadoToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.CambiarEstadoToolStripMenuItem.Text = "Cambiar Estado"
         '
         'ToolStripSeparator4
         '
@@ -811,8 +811,8 @@ Partial Class FormRuta
     Friend WithEvents ToolStripButton4 As ToolStripButton
     Friend WithEvents ToolStripSeparator10 As ToolStripSeparator
     Friend WithEvents ToolStripButtonAcciones As ToolStripDropDownButton
-    Friend WithEvents ImprimirPlanillaToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents EditarToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CambiarEstadoToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RegistrarCajasPorOrdenToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
     Friend WithEvents ToolStripButtonSeleccionarTodosSeleccionados As ToolStripButton
     Friend WithEvents ToolStripSeparator8 As ToolStripSeparator

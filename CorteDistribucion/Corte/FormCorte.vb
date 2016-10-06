@@ -50,9 +50,11 @@ Public Class FormCorte
                     Dim item As New KeyValueObject(Of Integer, String)
                     item.Key = e.Cells("id_bodega").Value
                     item.Value = e.Cells("bodega_codigo").Value
-                    list.Add(item)
+
+                    If Not list.Any(Function(a) a.Key = item.Key) Then
+                        list.Add(item)
+                    End If
                 Next
-                list = list.Where(Function(a) a.Key <> 0).Distinct().ToList()
 
                 If (list.Count = 0) Then
                     Dim rows As DataRowCollection = lbxCeDis.DataSource.Rows
@@ -1013,17 +1015,15 @@ Public Class FormCorte
             Case 1
                 bodegaId = bodegas(0).Key
             Case Else
-                If (SeleccionarBodegaOrigenRuta(bodegas)) Then
-                    bodegaId = FormSeleccionBodegaOrigen.BodegaOrigenId
-                End If
+                Dim form As New FormSeleccionBodegaOrigen
+                With form
+                    .Bodegas = bodegas
+                    If .ShowDialog() = DialogResult.OK Then
+                        bodegaId = .BodegaOrigenId
+                    End If
+                End With
         End Select
-
         Return bodegaId
-    End Function
-
-    Private Function SeleccionarBodegaOrigenRuta(bodegas As List(Of KeyValueObject(Of Integer, String))) As Boolean
-        FormSeleccionBodegaOrigen.Bodegas = bodegas
-        Return (FormSeleccionBodegaOrigen.ShowDialog() = DialogResult.OK)
     End Function
 
     Private Function CrearCorte(connection As SqlConnection, transaction As SqlTransaction, corteNombre As String, tipoCorteId As Integer, fechaRuta As Date, BodegaOrigenRutaId As Integer, usuarioCorte As String) As Integer
@@ -1051,7 +1051,7 @@ Public Class FormCorte
         Dim sqlListaSeleccionadas As String = GetSQLListaSeleccionadas()
 
         Dim sql = My.Settings.CorteDistribucionSQLAgregarOrdenACorte _
-        .Replace("--@ListaSeleccionadas", sqlListaSeleccionadas)
+        .Replace("--@ListaHabilitadas", sqlListaSeleccionadas)
 
         Debug.WriteLine(sql)
 

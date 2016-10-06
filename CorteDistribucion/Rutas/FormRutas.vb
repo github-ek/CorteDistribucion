@@ -151,6 +151,11 @@ Public Class FormRutas
         CambiarAPLANILLADA()
     End Sub
 
+    Private Sub EditarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarToolStripMenuItem.Click
+        EditarRuta()
+    End Sub
+
+
 #End Region
 
 #Region "Seccion Filtros"
@@ -596,6 +601,24 @@ Public Class FormRutas
         Finally
             Me.Cursor = Cursors.Default
         End Try
+    End Sub
+
+
+    Private Sub EditarRuta()
+        If (dgvSeleccionadas.SelectedRows.Count <> 1) Then
+            MsgBox("Debe seleccionar un registro")
+            Return
+        End If
+
+        Dim RutaId As Integer = dgvSeleccionadas.SelectedRows(0).Cells("id_ruta").Value
+
+        Dim form As New FormRuta
+        With form
+            .RutaId = RutaId
+            .MdiParent = Me.MdiParent
+            .WindowState = FormWindowState.Maximized
+            .Show()
+        End With
     End Sub
 #End Region
 

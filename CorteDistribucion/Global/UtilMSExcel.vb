@@ -22,7 +22,12 @@
         For r As Integer = 0 To dt.Rows.Count() - 1
             Dim dr As DataRow = dt.Rows(r)
             For c As Integer = 0 To dt.Columns.Count - 1
-                arr(r + 1, c) = dr(c)
+                Select Case dr(c).GetType
+                    Case GetType(TimeSpan)
+                        arr(r + 1, c) = DirectCast(dr(c), TimeSpan).ToString("hh\:mm")
+                    Case Else
+                        arr(r + 1, c) = dr(c)
+                End Select
             Next
         Next r
 
@@ -60,7 +65,7 @@
             If (ds.Tables(0).Columns.Contains(col)) Then
                 col &= CStr(i)
             End If
-            ds.Tables(0).Columns.Add(col)
+            ds.Tables(0).Columns.Add(col, DGV.Columns(i).ValueType)
         Next
 
         Dim row As DataRow

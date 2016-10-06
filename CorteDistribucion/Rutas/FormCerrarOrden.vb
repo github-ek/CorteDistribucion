@@ -2,13 +2,6 @@
 Imports CorteDistribucion
 
 Public Class FormCerrarOrden
-    Private Const EJECUCION As String = "EJECUCION"
-    Private Const ENTREGADA As String = "ENTREGADA"
-    Private Const NO_ENTREGADA As String = "NO_ENTREGADA"
-    Private Const NOVEDADES As String = "NOVEDADES"
-    Private Const REPROGRAMADA As String = "REPROGRAMADA"
-    Private Const NO_REPROGRAMADA As String = "NO_REPROGRAMADA"
-
     Private EstadosOrden As List(Of KeyValueObject(Of String, String))
     Private CausalesDeNoEntrega As List(Of CausalDeNovedadDeDistribucion)
     Private CausalesDeNovedades As List(Of CausalDeNovedadDeDistribucion)
@@ -206,14 +199,14 @@ Public Class FormCerrarOrden
     End Sub
 
     Private Sub NuevaNovedad()
-        If (dgvLineas.SelectedRows.Count = 0 Or dgvLineas.SelectedRows.Count > 1) Then
+        If (dgvLineas.SelectedRows.Count <> 1) Then
             MsgBox("Debe seleccionar un registro")
             Return
         End If
 
         Dim LineOrdenId As Integer = dgvLineas.SelectedRows(0).Cells("id_linea_orden").Value
 
-        Dim form As New FormEdicionNovedad
+        Dim form As New FormCreacionNovedad
         With form
             .LineaOrdenId = LineOrdenId
             .CausalesDeNovedades = Me.CausalesDeNovedades
@@ -300,10 +293,10 @@ Public Class FormCerrarOrden
                             TextBoxValorRecaudo.Text = reader("valor_recaudo").ToString()
                             TextBoxUsuarioConfirmacion.Text = reader("usuario_confirmacion")
                             TextBoxNotasConfirmacion.Text = reader("notas_confirmacion")
-                            DTPFechaConfirmacion.Value = reader("fecha_confirmacion")
+                            SetDateTimePickerDateTimeValue(DTPFechaConfirmacion, reader, "fecha_confirmacion")
                             TextBoxUsuarioAceptacion.Text = reader("usuario_aceptacion")
                             TextBoxNotasAceptacion.Text = reader("notas_aceptacion")
-                            DTPFechaAceptacion.Value = reader("fecha_aceptacion")
+                            SetDateTimePickerDateTimeValue(DTPFechaAceptacion, reader, "fecha_aceptacion")
 
                             '-------------------------------------------------------------------------------------------------------------------
                             CausalDeReprogramacion = IIf(IsDBNull(reader("id_causal_reprogramacion")), Nothing, reader("id_causal_reprogramacion"))

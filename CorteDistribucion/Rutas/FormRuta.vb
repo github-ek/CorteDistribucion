@@ -10,7 +10,6 @@ Public Class FormRuta
     Private Sub FormRuta_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             Loading = True
-            Me.RutaId = 645
             Me.Cursor = Cursors.WaitCursor
 
             FillRuta()
@@ -49,15 +48,30 @@ Public Class FormRuta
                             TextBoxConductorNombres.Text = reader("conductor_apellidos").ToString().ToUpper() + "," + reader("conductor_nombres").ToString().ToUpper()
 
                             TextBoxEstadoSincronizacion.Text = reader("id_estado_sincronizacion_ruta")
-                            fecha = reader("fecha_sincronizacion")
-                            TextBoxFechaSincronizacion.Text = IIf(fecha Is Nothing, "", String.Format("{0:dd/MM/yyyy}", fecha))
+                            If Not IsDBNull(reader("fecha_sincronizacion")) Then
+                                fecha = reader("fecha_sincronizacion")
+                                TextBoxFechaSincronizacion.Text = String.Format("{0:dd/MM/yyyy}", fecha)
+                            Else
+                                fecha = Nothing
+                                TextBoxFechaSincronizacion.Text = ""
+                            End If
                             TextBoxIntentosSincronizacion.Text = reader("intentos_sincronizacion").ToString()
                             TextBoxErrorSincronizacion.Text = reader("error_sincronizacion")
 
-                            fecha = reader("fecha_cita_cargue")
-                            TextBoxFechaCitaCargue.Text = IIf(fecha Is Nothing, "", String.Format("{0:dd/MM/yyyy}", fecha))
-                            hora = reader("hora_cita_cargue")
-                            TextBoxHoraCitaCargue.Text = IIf(hora Is Nothing, "", String.Format("{0}", Date.Today().Add(hora).ToString("hh:mm tt", CultureInfo.InvariantCulture)))
+                            If Not IsDBNull(reader("fecha_cita_cargue")) Then
+                                fecha = reader("fecha_cita_cargue")
+                                TextBoxFechaCitaCargue.Text = String.Format("{0:dd/MM/yyyy}", fecha)
+                            Else
+                                TextBoxFechaCitaCargue.Text = ""
+                            End If
+
+
+                            If Not IsDBNull(reader("hora_cita_cargue")) Then
+                                hora = reader("hora_cita_cargue")
+                                TextBoxHoraCitaCargue.Text = String.Format("{0}", Date.Today().Add(hora).ToString("hh:mm tt", CultureInfo.InvariantCulture))
+                            Else
+                                TextBoxHoraCitaCargue.Text = ""
+                            End If
                         End While
                     End Using
                 End Using
@@ -91,7 +105,22 @@ Public Class FormRuta
         End Try
     End Sub
 
-    Private Sub ImprimirPlanillaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImprimirPlanillaToolStripMenuItem.Click
+    Private Sub CambiarEstadoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CambiarEstadoToolStripMenuItem.Click
+        CambiarEstado()
+    End Sub
 
+    Private Sub CambiarEstado()
+        If (dgvOrdenes.SelectedRows.Count <> 1) Then
+            MsgBox("Debe seleccionar un registro")
+            Return
+        End If
+
+        Dim OrdenId As Integer = dgvOrdenes.SelectedRows(0).Cells("id_orden").Value
+
+        Dim form As New FormCerrarOrden
+        With form
+            .OrdenId = OrdenId
+            .ShowDialog()
+        End With
     End Sub
 End Class

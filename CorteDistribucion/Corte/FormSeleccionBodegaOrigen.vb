@@ -12,11 +12,7 @@
     End Property
     Private Sub FormBodegaOrigenRuta_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.BodegaOrigenId = Nothing
-
-        ComboBox1.DataSource = Me.Bodegas
-        ComboBox1.DisplayMember = "Name"
-        ComboBox1.ValueMember = "Code"
-        ComboBox1.SelectedIndex = -1
+        FillComboBoxWithList(ComboBox1, Me.Bodegas, "Value")
     End Sub
 
     Private Sub ButtonAceptar_Click(sender As Object, e As EventArgs) Handles ButtonAceptar.Click
@@ -27,8 +23,13 @@
     End Sub
 
     Sub aceptar()
-        Me.BodegaOrigenId = CInt(ComboBox1.SelectedValue)
-        Me.Close()
+        Dim item = DirectCast(ComboBox1.SelectedItem, KeyValueObject(Of Integer, String))
+        If item IsNot Nothing Then
+            Me.BodegaOrigenId = item.Key
+            Me.DialogResult = DialogResult.OK
+        Else
+            Me.DialogResult = DialogResult.None
+        End If
     End Sub
 
     Sub cancelar()

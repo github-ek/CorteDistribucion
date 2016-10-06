@@ -1468,7 +1468,7 @@ Partial Class FormCorte
         Me.dgvSeleccionadas.Size = New System.Drawing.Size(967, 141)
         Me.dgvSeleccionadas.TabIndex = 30
         '
-        'FormCorteRutas
+        'FormCorte
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -1477,7 +1477,7 @@ Partial Class FormCorte
         Me.Controls.Add(Me.SplitContainerMainFill)
         Me.Controls.Add(Me.TableLayoutPanelMainTop)
         Me.Controls.Add(Me.lblTotalCorte)
-        Me.Name = "FormCorteRutas"
+        Me.Name = "FormCorte"
         Me.Padding = New System.Windows.Forms.Padding(10)
         Me.ShowInTaskbar = False
         Me.Text = "Planificación de Rutas"
